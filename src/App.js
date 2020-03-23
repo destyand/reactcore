@@ -1,26 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import DefaultLayout from './_containers/DefaultLayout/DefaultLayout';
+import Login from './_containers/Auth/Login/Login';
+import Aux from './_hoc/Aux';
+import {userIsNotAuthenticatedRedir, userIsAdminRedir} from './_config/auth';
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const Home = userIsAdminRedir(DefaultLayout);
+const Auth = userIsNotAuthenticatedRedir(Login);
+
+const loading = () => (<div className="animate animated fadeIn pt-3 text-center">Please Wait</div>)
+
+class App extends React.Component {
+    render() {
+        return (
+            <Aux>
+                <BrowserRouter>
+                    <React.Suspense fallback={loading()}>
+                        <Switch>
+                        <Route exact path="/login" name="Login Page" label="Login Page" render={props => <Auth {...props}/>} />
+                        <Route path="/" name="Home" render={props => <Home {...props}/>}></Route>
+                        </Switch>
+                    </React.Suspense>
+                </BrowserRouter>
+            </Aux>
+        )
+    }
 }
 
-export default App;
+const stateToProps = state => {
+    return {
+        isAuth: state.auth.user !== null
+    }
+}
+
+export default connect(stateToProps, null)(App);
