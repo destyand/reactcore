@@ -20,8 +20,8 @@ const SubMenu = props => {
       <Collapse isOpen={!collapsed} navbar className={classNames('items-menu',{'mb-1': !collapsed})}>
         {items.map((item, index) => (
             <NavItem key={index} className="pl-4">
-              <NavLink activeClassName="actived" tag={RRNavLink} to={item.target}>
-                {item.title}
+              <NavLink activeClassName="actived" tag={RRNavLink} to={item.url}>
+              <FontAwesomeIcon icon={item.icon} className="mr-2"/>{item.name}
               </NavLink>
             </NavItem>
             ))}

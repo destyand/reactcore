@@ -1,7 +1,8 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Container, Card, CardHeader, CardFooter, CardBody,
+	CardTitle, CardText } from 'reactstrap';
 import {connect} from 'react-redux';
 import {toastr} from 'react-redux-toastr';
 import {logoutAction, logoutResponse} from '../../_store/actions/authActions';
@@ -46,7 +47,7 @@ class DefaultLayout extends Component {
     return (
       <div className="App wrapper">
         <Suspense fallback={this.loading()}>
-            <DefaultSidebar toggle={() => {this.toggle()}} isOpen={this.state.isOpen} />
+            <DefaultSidebar menus={navigation} toggle={() => {this.toggle()}} isOpen={this.state.isOpen} />
         </Suspense>
             <Container fluid className={classNames('content', {'is-open': this.props.isOpen})}>
               <Suspense fallback={this.loading()}>
@@ -77,11 +78,20 @@ class DefaultLayout extends Component {
                               ...rest
                             }));
                           // console.log(`Generated crumbs for ${props.match.path}`);
-                          // crumbs.map(({ name, path, parent }) => console.log({ name, path, parent }));
+                          let header_tittle = null;
+                          crumbs.map(({ name, path, parent }) => {
+                            header_tittle = name;
+                          });
                             return (
                               <div>
                                 <Breadcrumb crumbs={crumbs} />
-                                <route.component {...props} />
+                                <Card>
+                                  <CardHeader>{header_tittle}</CardHeader>
+                                  <CardBody>
+                                    <route.component {...props} />
+                                  </CardBody>
+                                  <CardFooter>&nbsp;</CardFooter>
+                                </Card>
                               </div>
                           )
                         }} />
