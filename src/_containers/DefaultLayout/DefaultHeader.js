@@ -3,7 +3,7 @@ import Aux from '../../_hoc/Aux';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Navbar, Button, NavbarToggler, Collapse, Nav, NavItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAlignLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -24,9 +24,9 @@ class DefaultHeader extends React.Component {
 	render(){
 		return(
 			<Aux>
-				<Navbar color="light" light className="navbar shadow-sm  bg-white rounded" expand="sm">
+				<Navbar color="light" light className="navbar shadow-sm bg-white rounded" expand="sm">
 				<Button color="info" onClick={this.props.toggle}>
-					<FontAwesomeIcon icon={faAlignLeft}/>
+					<FontAwesomeIcon icon={faBars}/>
 				</Button>
 				<NavbarToggler onClick={() => {this.toggleOpen()}} />
 				<Collapse isOpen={this.state.isOpen} navbar>

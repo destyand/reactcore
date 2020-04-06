@@ -1,12 +1,11 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import * as router from 'react-router-dom';
-import { Container, Card, CardHeader, CardFooter, CardBody,
-	CardTitle, CardText } from 'reactstrap';
+import { Container, Card, CardHeader, CardFooter, CardBody } from 'reactstrap';
 import {connect} from 'react-redux';
 import {toastr} from 'react-redux-toastr';
 import {logoutAction, logoutResponse} from '../../_store/actions/authActions';
 import classNames from 'classnames';
+import Breadcrumb from '../../_components/main/breadcrumb/Breadcrumb';
 
 // sidebar nav config
 import navigation from '../../_hoc/Nav';
@@ -15,7 +14,7 @@ import routes from '../../_config/routes';
 
 const DefaultSidebar = React.lazy(() => import('./DefaultSidebar'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
-const Breadcrumb = React.lazy(() => import('../../_components/main/breadcrumb/Breadcrumb'));
+// const Breadcrumb = React.lazy(() => import('../../_components/main/breadcrumb/Breadcrumb'));
 
 class DefaultLayout extends Component {
   state = {
@@ -49,7 +48,7 @@ class DefaultLayout extends Component {
         <Suspense fallback={this.loading()}>
             <DefaultSidebar menus={navigation} toggle={() => {this.toggle()}} isOpen={this.state.isOpen} />
         </Suspense>
-            <Container fluid className={classNames('content', {'is-open': this.props.isOpen})}>
+            <Container fluid className={classNames('content', {'is-open': this.state.isOpen}, {'is-not-open': !this.state.isOpen})}>
               <Suspense fallback={this.loading()}>
                   <DefaultHeader toggle={() => {this.toggle()}} isOpen={this.state.isOpen} logout={e=>this.handleClick(e)} />
                   <Suspense fallback={this.loading()}>

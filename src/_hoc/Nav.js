@@ -25,6 +25,11 @@ export default {
           url: '/example2',
           icon: faQuestion,
         },
+        {
+          name: 'React Table',
+          url: '/react_table',
+          icon: faQuestion,
+        },
       ],
     },
     {
@@ -38,7 +43,12 @@ export default {
         {
           name: 'Master Route',
           url: '/master_route',
-          icon: faPaperPlane,
+          icon: faCopy,
+        },
+        {
+          name: 'Master Users',
+          url: '/master_users',
+          icon: faImage,
         },
       ],
     },

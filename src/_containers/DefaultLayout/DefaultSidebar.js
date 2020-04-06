@@ -1,6 +1,5 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import SubMenu from './SubMenu';
 import { NavItem, NavLink, Nav } from 'reactstrap';
 import { NavLink as RRNavLink } from 'react-router-dom';
@@ -16,7 +15,7 @@ const SideBar = props => {
 	const Navigation = navigation.items.map((dt, key) => {
 		if (typeof dt.navigation_header !== 'undefined' && dt.navigation_header.length > 0) { 
 			dt.navigation_header.map((header, index) => {
-				Category = <p>{header.name}</p> 
+				Category = <p className="nav-title">{header.name}</p> 
 			})
 		} else { Category = null; }
 		if(typeof dt.children !== 'undefined'){

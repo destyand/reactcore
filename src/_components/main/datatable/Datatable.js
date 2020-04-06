@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Button } from 'reactstrap';
 
-export default class DataTable extends Component {
+class DataTable extends Component {
   constructor(props) {
     super(props);
 
@@ -21,6 +22,7 @@ export default class DataTable extends Component {
       first_page: 1,
       current_page: 1,
       sorted_column: this.props.columns[0],
+      columns: this.props.columns,
       offset: 4,
       order: 'asc',
     };
@@ -65,6 +67,7 @@ export default class DataTable extends Component {
   }
 
   componentDidMount() {
+    if (this.props.actions) { this.setState({ columns: this.state.columns.push('actions') }) }
     this.setState({ current_page: this.state.entities.meta.current_page }, () => {this.fetchEntities()});
   }
 
@@ -77,23 +80,32 @@ export default class DataTable extends Component {
     }
     return this.props.columns.map(column => {
       return <th className="table-head" key={column} onClick={() => this.sortByColumn(column)}>
-        { this.columnHead(column) }
-        { column === this.state.sorted_column && icon }
-      </th>
+                { this.columnHead(column) }
+                { column === this.state.sorted_column && icon }
+              </th>
     });
   }
 
-  userList() {
+  dataList() {
     if (this.state.entities.data.length) {
-      return this.state.entities.data.map(user => {
-        return <tr key={ user.id }>
-          {Object.keys(user).map(key => <td key={key}>{ user[key] }</td>)}
-        </tr>
+      let edit;
+      let del;
+      if(this.props.actionEdit) {
+        edit = <Button color="info" size="sm"><i className="fa fa-pencil-square-o"></i> EDIT</Button>
+      }
+      if(this.props.actionDelete){
+        del = <Button color="danger" size="sm"><i className="fa fa-trash-o"></i> DELETE</Button>
+      }
+      return this.state.entities.data.map(data => {
+        return <tr key={ data.id }>
+                {Object.keys(data).map(key => <td key={key}>{ data[key] }</td>)}
+                {(this.props.actions) ? <td> {edit} {del} </td> : null }
+              </tr>
       })
     } else {
       return <tr>
-        <td colSpan={this.props.columns.length} className="text-center">No Records Found.</td>
-      </tr>
+                <td colSpan={this.state.columns.length} className="text-center">No Records Found.</td>
+              </tr>
     }
   }
 
@@ -115,34 +127,34 @@ export default class DataTable extends Component {
 
   render() {
     return (
-      <div className="data-table">
-        <table className="table table-bordered">
+      <div className="table-responsive">
+        <table className="table table-bordered table-striped">
           <thead>
             <tr>{ this.tableHeads() }</tr>
           </thead>
-          <tbody>{ this.userList() }</tbody>
+          <tbody>{ this.dataList() }</tbody>
         </table>
         { (this.state.entities.data && this.state.entities.data.length > 0) &&
           <nav>
             <ul className="pagination">
               <li className="page-item">
-                <button className="page-link"
+                <Button className="page-link"
                   disabled={ 1 === this.state.entities.meta.current_page }
                   onClick={() => this.changePage(this.state.entities.meta.current_page - 1)}
                 >
                   Previous
-                </button>
+                </Button>
               </li>
               { this.pageList() }
               <li className="page-item">
-                <button className="page-link"
+                <Button className="page-link"
                   disabled={this.state.entities.meta.last_page === this.state.entities.meta.current_page}
                   onClick={() => this.changePage(this.state.entities.meta.current_page + 1)}
                 >
                   Next
-                </button>
+                </Button>
               </li>
-              <span style={{ marginTop: '8px' }}> &nbsp; <i>Displaying { this.state.entities.data.length } of { this.state.entities.meta.total } entries.</i></span>
+              <span style={{ marginTop: '8px' }}> &nbsp; <i>Showing { this.state.entities.data.length } of { this.state.entities.meta.total } entries.</i></span>
             </ul>
           </nav>
         }
@@ -150,3 +162,5 @@ export default class DataTable extends Component {
     );
   }
 }
+
+export default DataTable;
